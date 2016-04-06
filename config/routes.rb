@@ -1,5 +1,6 @@
 Rails.application.routes.draw do
   resources :addresses
+  resources :charges
   resources :orders do
     member do
       get :confirm

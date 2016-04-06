@@ -1,7 +1,8 @@
 class OrderItemsController < ApplicationController
+  before_action :set_order_item, only: [:show, :edit, :destroy]
   before_action :load_order, only: [:create]
 
-  before_action :set_order_item, only: [:show, :edit, :update, :destroy]
+
 
   # GET /order_items
   # GET /order_items.json
@@ -22,18 +23,18 @@ class OrderItemsController < ApplicationController
   # POST /order_items
   # POST /order_items.json
   def create
-    @order_item = @order.order_items.find_or_initialize_by(product_id: params[:product_id])
-    @order_item.quantity +=1
-    respond_to do |format|
-    if @order_item.save
-        format.html { redirect_to @order, notice: 'Successfully added product to cart.' }
-        format.json { render :show, status: :created, location: @order_item }
-      else
-        format.html { render :new }
-        format.json { render json: @order_item.errors, status: :unprocessable_entity }
+      @order_item = @order.order_items.where(product_id: params[:product_id]).first_or_initialize
+      @order_item.quantity = @order_item.quantity + 1
+      respond_to do |format|
+        if @order_item.save
+          format.html { redirect_to @order, notice: 'Successfully added product to cart.' }
+          format.json { render :show, status: :created, location: @order_item }
+        else
+          format.html { render :new }
+          format.json { render json: @order_item.errors, status: :unprocessable_entity }
+        end
       end
     end
-  end
 
   # PATCH/PUT /order_items/1
   # PATCH/PUT /order_items/1.json
@@ -60,19 +61,18 @@ class OrderItemsController < ApplicationController
   end
 
   private
-  def load_order
-          @order = Order.find_or_initialize_by(id: session[:order_id], status: "unsubmitted",
-          user_id: session[:user_id])
-        if @order.new_record?
-          @order.save!
-          session[:order_id] = @order.id
-    end
-
-  end
-    # Use callbacks to share common setup or constraints between actions.
+# Use callbacks to share common setup or constraints between actions.
     def set_order_item
       @order_item = OrderItem.find(params[:id])
     end
+
+    def load_order
+     @order = Order.where(id: session[:order_id], status: "unsubmitted", user_id: session[:user_id]).first_or_initialize
+       if @order.new_record?
+         @order.save!
+         session[:order_id] = @order.id
+       end
+   end
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def order_item_params

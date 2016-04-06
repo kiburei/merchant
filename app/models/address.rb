@@ -1,9 +1,9 @@
 class Address < ActiveRecord::Base
   #validates: phone: {presence: true}
-  belongs_to :users
+  belongs_to :user
   has_many :orders
 
   def to_s
-    [line1 ,city].compact.join
+    [hood, landmark].compact.join
   end
 end
