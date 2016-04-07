@@ -6,4 +6,5 @@ class OrderItem < ActiveRecord::Base
   def subtotal
     @subtotal = quantity * product.price
   end
+
 end

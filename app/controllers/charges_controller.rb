@@ -1,4 +1,8 @@
 class ChargesController < ApplicationController
+
+  def index
+  end
+
   def new
   end
 
@@ -14,7 +18,7 @@ class ChargesController < ApplicationController
     :customer => customer.id,
     :amount => @amount,
     :description => 'Rails Stripe Customer',
-    :currency => 'usd'
+    :currency => 'KES'
     )
 
   rescue Stripe::CardError => e

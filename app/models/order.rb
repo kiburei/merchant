@@ -3,4 +3,9 @@ class Order < ActiveRecord::Base
   belongs_to :user
   belongs_to :address
 
+
+  def total
+    return order_items.inject(0) { |sum, p| sum + p.subtotal }
+  end
+
 end
