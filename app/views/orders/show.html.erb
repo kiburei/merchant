@@ -17,7 +17,6 @@
     <td><%= @order.order_items.count %></td>
   </tr>
   <tr>
-    <th>Items</th>
     <th>Title</th>
     <th>Quantity</th>
     <th>Stock</th>
@@ -26,8 +25,7 @@
   </tr>
   <% @order.order_items.each do |item| %>
   <tr>
-  <td><%=  %></td>
-  <td><%= item.product.title %></td>
+  <td><%= item.product.description %></td>
   <td><%= link_to item.quantity, edit_order_item_path(item) %></td>
   <td><%= print_stock(item.product.stock) %></td>
   <td><%= print_price(item.product.price) %></td>
@@ -45,25 +43,7 @@
   <td>
     <%= f.select :address_id, current_user.addresses.collect{|a| [a.to_s, a.id]} %></br>
     <%= link_to "New Address", new_address_path %></br>
-    <%= form_tag charges_path do %>
-      <article>
-        <% if flash[:error].present? %>
-          <div id="error_explanation">
-            <p><%= flash[:error] %></p>
-          </div>
-        <% end %>
-        <label class="amount">
-          <span></span>
-        </label>
-      </article>
-
-      <script src="https://checkout.stripe.com/checkout.js" class="stripe-button"
-              data-key="<%= Rails.configuration.stripe[:publishable_key] %>"
-              data-description="Invite Friends to Changia Mzinga"
-              data-amount="8000"
-              data-locale="auto"></script>
-    <% end %>
-
+    <%= f.submit "Submit Order" %>
 
   </td>
 </tr>
