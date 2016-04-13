@@ -48,7 +48,7 @@ class OrdersController < ApplicationController
   # PATCH/PUT /orders/1.json
   def update
     respond_to do |format|
-      if @order.update(order_params.merge(status: 'submitted'))
+      if @order.update(order_params.merge(status: 'submitted')) && @order.update(order_params)
         session[:order_id] = nil
         format.html { redirect_to confirm_order_path(@order) }
         format.json { render :show, status: :ok, location: @order }
@@ -78,6 +78,6 @@ class OrdersController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def order_params
-      params.require(:order).permit(:user_id, :status, :address_id)
+      params.require(:order).permit(:user_id, :status, :address_id, :payment)
     end
 end

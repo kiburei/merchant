@@ -3,6 +3,12 @@ module ProductsHelper
     format("KES %.2f", price)
     #number_to_currency price
   end
+
+  def print_percent(percent)
+    @percent = percent
+    content_tag(:span, " Progress #{@percent} %", class: "in_stock")
+  end
+
   def print_stock(stock)
     @stock = stock
     @requested = 1
